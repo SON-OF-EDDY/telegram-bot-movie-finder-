@@ -39,11 +39,11 @@ def search_for_keyword(keyword, number_of_items):
     else:
 
       movie_title = search['title']
+      
+      year = search.data.get('year','-')
 
-      year = search['year']
-
-      cast = search['cast']
-
+      cast = search.data.get('cast','-')
+      
       final_cast = []
       if len(cast) >= 3:
         cast = cast[:3]
@@ -52,17 +52,20 @@ def search_for_keyword(keyword, number_of_items):
       else:
         final_cast.append(str(cast[0]))
 
-      print(cast)
+      
+      cover = search.data.get('cover url','-')
 
-      cover = search.data['cover url']
+      
+      #plot = search.data['plot outline']
 
-      plot = search.data['plot outline']
+      
+      director = str(search.get('director','-')[0])
 
-      director = search['director'][0]
+      
+      video = search.data.get('videos','-')
 
-      video = search.data['videos']
-
-      genres = search.data['genres']
+      
+      genres = search.data.get('genres','-')
 
       movie_dictionary = {
         'kind': kind,
@@ -71,7 +74,7 @@ def search_for_keyword(keyword, number_of_items):
         'cast': final_cast,
         'genres': genres,
         'director': director,
-        'plot': plot,
+        #'plot': plot,
         'cover': cover,
         'video': video,
       }
@@ -93,7 +96,7 @@ bot = telebot.TeleBot(API_KEY)
 def movies_with_keyword(message):
   full_text = message.text
   keyword = full_text[8:]
-  output = search_for_keyword(keyword, 1)
+  output = search_for_keyword(keyword, 5)
 
   for entry in output:
     formatted = ''
